@@ -9,9 +9,11 @@ import {
   Star,
   ShoppingBag,
   ExternalLink,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/format";
 import { InstagramIcon } from "@/components/ui/InstagramIcon";
+import { useAdminLogout } from "@/components/admin/AdminAuthGate";
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -23,6 +25,7 @@ const nav = [
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const logout = useAdminLogout();
 
   return (
     <div className="min-h-screen bg-parchment-deep">
@@ -68,7 +71,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
-          <div className="border-t border-white/10 p-4">
+          <div className="space-y-2 border-t border-white/10 p-4">
             <Link
               href="/"
               className="flex items-center gap-2 text-sm text-parchment/70 transition hover:text-white"
@@ -76,6 +79,16 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <ExternalLink className="h-4 w-4" />
               View storefront
             </Link>
+            {logout && (
+              <button
+                type="button"
+                onClick={logout}
+                className="flex w-full items-center gap-2 text-left text-sm text-parchment/70 transition hover:text-white"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign out
+              </button>
+            )}
           </div>
         </aside>
 
@@ -113,9 +126,20 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 </Link>
               ))}
             </div>
-            <Link href="/" className="btn btn-ghost !px-3 !py-2 text-xs">
-              Storefront
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/" className="btn btn-ghost !px-3 !py-2 text-xs">
+                Storefront
+              </Link>
+              {logout && (
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="btn btn-secondary !px-3 !py-2 text-xs"
+                >
+                  Sign out
+                </button>
+              )}
+            </div>
           </header>
           <div className="flex-1 p-4 md:p-8">{children}</div>
         </div>
