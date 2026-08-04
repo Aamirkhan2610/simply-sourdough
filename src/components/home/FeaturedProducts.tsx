@@ -15,8 +15,8 @@ export function FeaturedProducts({ products }: { products: Product[] }) {
             Fresh from the oven
           </h2>
           <p className="mt-3 text-muted">
-            Signature loaves, Swedish buns, and Nordic pastries — managed in our
-            admin CRM and ready for pickup on bake days.
+            Signature loaves, Swedish buns, and Nordic pastries — pre-order
+            online and pick up fresh on bake days.
           </p>
         </div>
         <Link href="/shop" className="btn btn-ghost">

@@ -20,8 +20,7 @@ export default async function ShopPage() {
             Our breads & buns
           </h1>
           <p className="mt-4 text-muted">
-            All products are preloaded in the admin CRM. Order for pickup on
-            Mon, Wed & Fri from 8am — until sold out.
+            Order for pickup on Mon, Wed & Fri from 8am — until sold out.
           </p>
         </div>
 

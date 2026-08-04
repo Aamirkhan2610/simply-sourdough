@@ -16,7 +16,7 @@ export const siteSettings: SiteSettings = {
   city: "Lismore NSW 2480, Australia",
   hours: "Mon, Wed & Fri · 8:00 AM – sold out",
   instagramUrl: "https://www.instagram.com/simplysourdough2023/",
-  facebookUrl: "https://www.facebook.com/profile.php?id=61551937266868",
+  facebookUrl: "https://www.facebook.com/profile.php?id=61551937266868&mibextid=LQQJ4d",
   googleReviewsUrl: "https://share.google/n2bqUz1UaKPGnJzbU",
   aboutStory:
     "Farid’s passion for sourdough ignited in his childhood, watching his mother create magic in the kitchen. Over 14 years he honed his craft as a baker in Denmark and Sweden. Four years ago he moved to Lismore and founded Simply Sourdough — a micro-bakery celebrating traditional Nordic recipes with only fresh, natural ingredients and slow fermentation.",

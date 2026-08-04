@@ -1,10 +1,24 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, Phone, Mail, Wheat } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { siteSettings } from "@/data/seed";
 import { InstagramIcon } from "@/components/ui/InstagramIcon";
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.02 3.66 9.18 8.44 9.93v-7.02H7.9v-2.91h2.4V9.84c0-2.37 1.4-3.69 3.56-3.69 1.03 0 2.11.19 2.11.19v2.33h-1.19c-1.17 0-1.54.73-1.54 1.48v1.78h2.62l-.42 2.91h-2.2V22c4.78-.75 8.44-4.91 8.44-9.93z" />
+    </svg>
+  );
+}
 
 export function Footer() {
   const pathname = usePathname();
@@ -16,8 +30,14 @@ export function Footer() {
         <div className="container-page grid gap-10 py-16 md:grid-cols-12">
           <div className="md:col-span-5">
             <div className="mb-5 flex items-center gap-3 font-display text-2xl font-bold">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-clay text-white">
-                <Wheat className="h-5 w-5" />
+              <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-white shadow-sm">
+                <Image
+                  src="/logo.png"
+                  alt="Simply Sourdough Organic"
+                  fill
+                  className="object-contain p-0.5"
+                  sizes="56px"
+                />
               </span>
               Simply Sourdough
             </div>
@@ -25,15 +45,26 @@ export function Footer() {
               {siteSettings.tagline}. Artisan Nordic baking in the heart of
               Lismore — fresh, natural ingredients and traditional methods only.
             </p>
-            <a
-              href={siteSettings.instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium transition hover:bg-white/10"
-            >
-              <InstagramIcon className="h-4 w-4 text-copper-light" />
-              @simplysourdough2023
-            </a>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <a
+                href={siteSettings.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium transition hover:bg-white/10"
+              >
+                <InstagramIcon className="h-4 w-4 text-copper-light" />
+                Instagram
+              </a>
+              <a
+                href={siteSettings.facebookUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium transition hover:bg-white/10"
+              >
+                <FacebookIcon className="h-4 w-4 text-copper-light" />
+                Facebook
+              </a>
+            </div>
           </div>
 
           <div className="md:col-span-3">
@@ -74,8 +105,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-white">
-                  Admin CRM
+                <Link href="/cart" className="hover:text-white">
+                  Cart
                 </Link>
               </li>
             </ul>

@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ShoppingBag, Wheat, X } from "lucide-react";
+import { Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/format";
@@ -45,10 +46,18 @@ export function Header() {
       <div className="container-page flex h-[76px] items-center justify-between gap-4">
         <Link
           href="/"
-          className="group flex items-center gap-3 font-display text-xl font-bold text-espresso"
+          className="group flex items-center gap-2.5 font-display text-xl font-bold text-espresso"
+          aria-label="Simply Sourdough home"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-espresso text-copper-light shadow-md transition group-hover:bg-clay">
-            <Wheat className="h-5 w-5" />
+          <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-[var(--border)] transition group-hover:ring-clay/40 sm:h-14 sm:w-14">
+            <Image
+              src="/logo.png"
+              alt="Simply Sourdough Organic"
+              fill
+              priority
+              className="object-contain p-0.5"
+              sizes="56px"
+            />
           </span>
           <span className="leading-none">
             <span className="block tracking-tight">Simply</span>
@@ -89,13 +98,6 @@ export function Header() {
             )}
           </Link>
 
-          <Link
-            href="/admin"
-            className="btn btn-primary hidden !px-4 !py-2.5 text-sm sm:inline-flex"
-          >
-            CRM
-          </Link>
-
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--border)] bg-white md:hidden"
@@ -124,12 +126,6 @@ export function Header() {
                 {l.label}
               </Link>
             ))}
-            <Link
-              href="/admin"
-              className="mt-2 rounded-2xl bg-clay px-4 py-3.5 text-center font-semibold text-white"
-            >
-              Admin CRM
-            </Link>
           </nav>
         </div>
       )}

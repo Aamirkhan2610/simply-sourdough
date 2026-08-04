@@ -86,7 +86,7 @@ export default function ContactPage() {
             Send a message
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Demo form — wire to email or CRM when you go live.
+            Prefer WhatsApp for the fastest reply on bake days.
           </p>
           <form className="mt-8 space-y-4" action="#">
             <div>

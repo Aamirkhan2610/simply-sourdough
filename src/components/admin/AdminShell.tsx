@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -8,7 +9,6 @@ import {
   Star,
   ShoppingBag,
   ExternalLink,
-  Wheat,
 } from "lucide-react";
 import { cn } from "@/lib/format";
 import { InstagramIcon } from "@/components/ui/InstagramIcon";
@@ -29,8 +29,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen">
         <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-espresso text-parchment md:flex">
           <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-clay text-white">
-              <Wheat className="h-5 w-5" />
+            <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-white">
+              <Image
+                src="/logo.png"
+                alt="Simply Sourdough"
+                fill
+                className="object-contain p-0.5"
+                sizes="44px"
+              />
             </span>
             <div>
               <p className="font-display text-lg font-bold">Simply CRM</p>
@@ -76,8 +82,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-20 flex items-center justify-between border-b border-[var(--border)] bg-[rgba(246,240,230,0.92)] px-4 py-3 backdrop-blur md:px-8">
             <div className="flex items-center gap-2 md:hidden">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-espresso text-copper-light">
-                <Wheat className="h-4 w-4" />
+              <span className="relative h-8 w-8 overflow-hidden rounded-full bg-white ring-1 ring-[var(--border)]">
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  fill
+                  className="object-contain p-0.5"
+                  sizes="32px"
+                />
               </span>
               <span className="font-display font-bold text-espresso">CRM</span>
             </div>
