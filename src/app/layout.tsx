@@ -25,6 +25,14 @@ export const metadata: Metadata = {
   },
   description:
     "Beautiful breads and delightful buns inspired by Sweden. Artisan sourdough bakery in Lismore NSW — slow fermented, naturally made.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.ico",
+  },
   openGraph: {
     title: "Simply Sourdough",
     description: "Beautiful breads & delightful buns inspired by Sweden",
@@ -32,6 +40,7 @@ export const metadata: Metadata = {
     siteName: "Simply Sourdough",
     locale: "en_AU",
     type: "website",
+    images: [{ url: "/logo.png", alt: "Simply Sourdough Organic" }],
   },
 };
 
