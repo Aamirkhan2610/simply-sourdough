@@ -87,3 +87,25 @@ export interface SiteSettings {
   googleReviewsUrl: string;
   aboutStory: string;
 }
+
+/** Where order notifications go, and the Zoho SMTP account used to send them. */
+export interface EmailSettings {
+  /** Inbox that receives every new website order. */
+  orderRecipient: string;
+  /** Optional extra inboxes, comma separated. */
+  ccRecipients: string;
+  /** Address shown in the From header. Must be the SMTP account or an alias of it. */
+  fromAddress: string;
+  smtpHost: string;
+  smtpPort: number;
+  smtpUser: string;
+  smtpPassword: string;
+  /** Send the customer their own confirmation copy. */
+  sendCustomerConfirmation: boolean;
+  updatedAt: string;
+}
+
+/** Email settings as sent to the browser — the password is never included. */
+export type SafeEmailSettings = Omit<EmailSettings, "smtpPassword"> & {
+  smtpPasswordSet: boolean;
+};

@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   ExternalLink,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/format";
 import { InstagramIcon } from "@/components/ui/InstagramIcon";
@@ -21,6 +22,7 @@ const nav = [
   { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
   { href: "/admin/instagram", label: "Instagram", icon: InstagramIcon },
+  { href: "/admin/settings", label: "Email settings", icon: Settings },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

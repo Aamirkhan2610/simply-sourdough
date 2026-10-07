@@ -8,11 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  ADMIN_SESSION_KEY,
-  createSessionToken,
-  verifyAdminCredentials,
-} from "@/lib/admin-auth";
+import { ADMIN_SESSION_KEY, createSessionToken } from "@/lib/admin-auth";
 
 const LogoutContext = createContext<(() => void) | null>(null);
 
@@ -27,30 +23,61 @@ export function AdminAuthGate({ children }: { children: React.ReactNode }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
+  // The httpOnly session cookie is the source of truth, not sessionStorage.
   useEffect(() => {
-    try {
-      const token = sessionStorage.getItem(ADMIN_SESSION_KEY);
-      setAuthed(Boolean(token?.startsWith("ss-ok-")));
-    } catch {
-      setAuthed(false);
-    }
-    setReady(true);
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/session", { cache: "no-store" });
+        const body = await res.json();
+        if (active) setAuthed(Boolean(body.authenticated));
+      } catch {
+        if (active) setAuthed(false);
+      } finally {
+        if (active) setReady(true);
+      }
+    })();
+    return () => {
+      active = false;
+    };
   }, []);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    if (!verifyAdminCredentials(username, password)) {
-      setError("Invalid username or password. Please try again.");
-      return;
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!res.ok) {
+        setError("Invalid username or password. Please try again.");
+        return;
+      }
+      try {
+        sessionStorage.setItem(ADMIN_SESSION_KEY, createSessionToken());
+      } catch {
+        /* private browsing — the cookie is what matters */
+      }
+      setAuthed(true);
+    } catch {
+      setError("Could not reach the server. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    sessionStorage.setItem(ADMIN_SESSION_KEY, createSessionToken());
-    setAuthed(true);
   }
 
   function handleLogout() {
-    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    try {
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    } catch {
+      /* ignore */
+    }
+    void fetch("/api/admin/session", { method: "DELETE" });
     setAuthed(false);
     setUsername("");
     setPassword("");
@@ -130,8 +157,12 @@ export function AdminAuthGate({ children }: { children: React.ReactNode }) {
               </p>
             )}
 
-            <button type="submit" className="btn btn-primary w-full">
-              Sign in
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={submitting}
+            >
+              {submitting ? "Signing in…" : "Sign in"}
             </button>
           </form>
 

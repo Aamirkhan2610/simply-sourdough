@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { getProducts, saveOrders, getOrders } from "@/lib/store";
 import { formatMoney } from "@/lib/format";
+import {
+  getMailer,
+  MailerNotConfiguredError,
+  orderRecipients,
+} from "@/lib/mailer";
 import type { Order } from "@/lib/types";
-
-const ORDER_TO = "Farid@simplysourdough.shop";
 
 function clean(value: unknown, max: number) {
   return String(value ?? "")
@@ -83,17 +85,21 @@ export async function POST(request: Request) {
     notes: notes || undefined,
   };
 
-  const host = process.env.SMTP_HOST || "smtp.zoho.com";
-  const user = process.env.SMTP_USER || ORDER_TO;
-  const pass = process.env.SMTP_PASS;
-  if (!pass) {
-    return NextResponse.json(
-      { error: "This order was not sent. The bakery inbox is not connected yet. Please call +61 478 481 989." },
-      { status: 503 }
-    );
+  // Recipient and SMTP account come from the admin panel's email settings.
+  let mailer;
+  try {
+    mailer = await getMailer();
+  } catch (error) {
+    if (error instanceof MailerNotConfiguredError) {
+      return NextResponse.json(
+        { error: "This order was not sent. The bakery inbox is not connected yet. Please call +61 478 481 989." },
+        { status: 503 }
+      );
+    }
+    throw error;
   }
+  const { to: orderTo, cc: orderCc } = orderRecipients(mailer.settings);
 
-  const port = Number(process.env.SMTP_PORT || 465);
   const itemText = lines
     .map((line) => `- ${line.name} × ${line.quantity} — ${formatMoney(line.price * line.quantity)}`)
     .join("\n");
@@ -115,39 +121,14 @@ export async function POST(request: Request) {
     "Payment on collection.",
   ].join("\n");
 
+  // The bakery notification is the one that must get through.
   try {
-    const transport = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user, pass },
-    });
-    await transport.sendMail({
-      from: process.env.SMTP_FROM || user,
-      to: ORDER_TO,
+    await mailer.send({
+      to: orderTo,
+      cc: orderCc,
       replyTo: email,
       subject: `New Simply Sourdough order ${order.id}`,
       text,
-    });
-    await transport.sendMail({
-      from: process.env.SMTP_FROM || user,
-      to: email,
-      replyTo: ORDER_TO,
-      subject: `We received your Simply Sourdough order ${order.id}`,
-      text: [
-        `Hello ${customerName},`,
-        "",
-        "Thanks for your order. We will have it ready for pickup at Embassy Arcade, 3/97 Keen St, Lismore.",
-        "Tuesday to Friday, 8:00 AM to 5:00 PM. Saturday, 7:00 AM to 2:00 PM, or until sold out.",
-        "Payment is on collection.",
-        "",
-        itemText,
-        "",
-        `Total: ${formatMoney(total)}`,
-        "",
-        "Simply Sourdough",
-        "+61 478 481 989",
-      ].join("\n"),
     });
   } catch (error) {
     console.error("order email failed", error);
@@ -155,6 +136,33 @@ export async function POST(request: Request) {
       { error: "We could not send this order. Please call the bakery and we will take it from there." },
       { status: 502 }
     );
+  }
+
+  // The customer's copy is a courtesy — a bounce here must not lose the order.
+  if (mailer.settings.sendCustomerConfirmation) {
+    try {
+      await mailer.send({
+        to: email,
+        replyTo: orderTo,
+        subject: `We received your Simply Sourdough order ${order.id}`,
+        text: [
+          `Hello ${customerName},`,
+          "",
+          "Thanks for your order. We will have it ready for pickup at Embassy Arcade, 3/97 Keen St, Lismore.",
+          "Tuesday to Friday, 8:00 AM to 5:00 PM. Saturday, 7:00 AM to 2:00 PM, or until sold out.",
+          "Payment is on collection.",
+          "",
+          itemText,
+          "",
+          `Total: ${formatMoney(total)}`,
+          "",
+          "Simply Sourdough",
+          "+61 478 481 989",
+        ].join("\n"),
+      });
+    } catch (error) {
+      console.error("customer confirmation failed", error);
+    }
   }
 
   const existing = await getOrders();

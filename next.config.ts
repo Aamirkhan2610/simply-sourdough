@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // pg resolves its optional native bindings at runtime; keep it out of the bundle.
+  serverExternalPackages: ["pg"],
   async redirects() {
     return [
       {
