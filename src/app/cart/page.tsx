@@ -1,137 +1,169 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatMoney } from "@/lib/format";
 
 export default function CartPage() {
   const { items, updateQty, removeItem, subtotal, itemKey, clear } = useCart();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [notes, setNotes] = useState("");
+  const [error, setError] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [sending, setSending] = useState(false);
+
+  async function placeOrder() {
+    setError("");
+    setSending(true);
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: name,
+          email,
+          phone,
+          notes,
+          items: items.map((item) => ({
+            productId: item.productId,
+            variantId: item.variantId,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+      const data = (await res.json()) as { id?: string; error?: string };
+      if (!res.ok || !data.id) {
+        setError(data.error || "We could not send this order.");
+        return;
+      }
+      setOrderId(data.id);
+      clear();
+    } catch {
+      setError("We could not send this order. Please call the bakery.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  if (orderId) {
+    return (
+      <div className="ss shop-page">
+        <div className="container" style={{ maxWidth: 720 }}>
+          <p className="eyebrow">Order received</p>
+          <h1 className="display-2" style={{ marginTop: 12 }}>
+            Thank you
+          </h1>
+          <p className="shop-lead">
+            Order {orderId} is on its way to the bakery. We will have it ready for pickup at Embassy Arcade. Payment is on collection.
+          </p>
+          <Link href="/shop" className="btn btn-primary" style={{ marginTop: 28 }}>
+            Back to the shop
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
-      <div className="container-page flex flex-col items-center py-28 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-parchment-deep">
-          <ShoppingBag className="h-8 w-8 text-muted" />
+      <div className="ss shop-page">
+        <div className="container" style={{ maxWidth: 720 }}>
+          <p className="eyebrow">Cart</p>
+          <h1 className="display-2" style={{ marginTop: 12 }}>
+            Your cart is empty
+          </h1>
+          <p className="shop-lead">Add a loaf or a bun, then send the order through for pickup.</p>
+          <Link href="/shop" className="btn btn-primary" style={{ marginTop: 28 }}>
+            Browse the shop
+          </Link>
         </div>
-        <h1 className="mt-6 font-display text-4xl font-semibold text-espresso">
-          Your cart is empty
-        </h1>
-        <p className="mt-2 max-w-sm text-muted">
-          Add some fresh loaves and buns — pickup on Mon, Wed & Fri.
-        </p>
-        <Link href="/shop" className="btn btn-primary mt-8">
-          Browse the shop
-        </Link>
       </div>
     );
   }
 
   return (
-    <div className="grain-bg min-h-screen">
-      <div className="container-page py-12 md:py-16">
-        <h1 className="font-display text-4xl font-semibold tracking-tight text-espresso md:text-5xl">
-          Your cart
+    <div className="ss shop-page">
+      <div className="container">
+        <p className="eyebrow">Cart</p>
+        <h1 className="display-2" style={{ marginTop: 12 }}>
+          Your order
         </h1>
-        <div className="mt-10 grid gap-10 lg:grid-cols-3">
-          <div className="space-y-4 lg:col-span-2">
+        <div className="cart-grid" style={{ marginTop: 28 }}>
+          <div>
             {items.map((item) => {
               const key = itemKey(item);
               return (
-                <div
-                  key={key}
-                  className="card-surface flex flex-col gap-4 p-4 sm:flex-row sm:items-center"
-                >
-                  <div className="relative h-28 w-full shrink-0 overflow-hidden rounded-2xl bg-parchment-deep sm:h-24 sm:w-24">
-                    {item.image && (
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        sizes="96px"
-                      />
+                <div key={key} className="cart-line">
+                  <div>
+                    {item.image ? (
+                      <Image src={item.image} alt="" width={192} height={192} />
+                    ) : (
+                      <img src="/brand/mark.svg" alt="" />
                     )}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <Link
-                      href={`/shop/${item.slug}`}
-                      className="font-display text-xl font-semibold text-espresso hover:text-clay-deep"
-                    >
-                      {item.name}
+                  <div>
+                    <Link href={`/shop/${item.slug}`}>
+                      <strong>{item.name}</strong>
                     </Link>
-                    {item.variantName && (
-                      <p className="text-sm text-muted">{item.variantName}</p>
-                    )}
-                    <p className="mt-1 font-bold text-espresso">
-                      {formatMoney(item.price)}
-                    </p>
+                    {item.variantName ? <p>{item.variantName}</p> : null}
+                    <p>{formatMoney(item.price)}</p>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center rounded-full border border-[var(--border-strong)] bg-white">
-                      <button
-                        type="button"
-                        className="p-2.5"
-                        onClick={() => updateQty(key, item.quantity - 1)}
-                        aria-label="Decrease"
-                      >
-                        <Minus className="h-4 w-4" />
-                      </button>
-                      <span className="w-8 text-center text-sm font-bold">
-                        {item.quantity}
-                      </span>
-                      <button
-                        type="button"
-                        className="p-2.5"
-                        onClick={() => updateQty(key, item.quantity + 1)}
-                        aria-label="Increase"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => removeItem(key)}
-                      className="rounded-full p-2.5 text-muted transition hover:bg-red-50 hover:text-red-600"
-                      aria-label="Remove"
-                    >
-                      <Trash2 className="h-4 w-4" />
+                  <div className="qty">
+                    <button type="button" onClick={() => updateQty(key, item.quantity - 1)} aria-label="Decrease">
+                      <Minus size={14} />
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button type="button" onClick={() => updateQty(key, item.quantity + 1)} aria-label="Increase">
+                      <Plus size={14} />
+                    </button>
+                    <button type="button" onClick={() => removeItem(key)} aria-label="Remove">
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>
               );
             })}
-            <button
-              type="button"
-              onClick={clear}
-              className="text-sm font-semibold text-muted underline underline-offset-2 hover:text-espresso"
-            >
+            <button type="button" onClick={clear} className="back-link" style={{ marginTop: 16 }}>
               Clear cart
             </button>
           </div>
-
-          <aside className="card-elevated h-fit p-6 md:p-7">
-            <h2 className="font-display text-2xl font-semibold text-espresso">
-              Summary
-            </h2>
-            <div className="mt-5 flex justify-between text-sm">
-              <span className="text-muted">Subtotal</span>
-              <span className="text-lg font-bold text-espresso">
-                {formatMoney(subtotal)}
-              </span>
-            </div>
-            <p className="mt-3 text-xs leading-relaxed text-muted">
-              Pickup at Embassy Arcade, Lismore. Payment on collection (demo
-              checkout).
+          <form
+            className="order-box"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void placeOrder();
+            }}
+          >
+            <h2>Pickup details</h2>
+            <p className="shop-lead" style={{ marginTop: 8 }}>
+              {formatMoney(subtotal)} · Embassy Arcade, Lismore. Payment on collection.
             </p>
-            <button type="button" className="btn btn-primary mt-6 w-full">
-              Place pickup order
+            <label>
+              Name
+              <input value={name} onChange={(e) => setName(e.target.value)} required autoComplete="name" />
+            </label>
+            <label>
+              Email
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+            </label>
+            <label>
+              Phone
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} required autoComplete="tel" />
+            </label>
+            <label>
+              Note for the bakery
+              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Pickup day, or anything we should know" />
+            </label>
+            {error ? <p className="form-error">{error}</p> : null}
+            <button type="submit" className="btn btn-primary" style={{ marginTop: 18, width: "100%" }} disabled={sending}>
+              {sending ? "Sending…" : "Place pickup order"}
             </button>
-            <Link href="/shop" className="btn btn-ghost mt-3 w-full">
-              Continue shopping
-            </Link>
-          </aside>
+          </form>
         </div>
       </div>
     </div>

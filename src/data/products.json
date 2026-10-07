@@ -1,0 +1,221 @@
+[
+  {
+    "id": "791",
+    "name": "Black Sesame Cookie",
+    "slug": "black-sesame-cookie",
+    "price": 15,
+    "currency": "AUD",
+    "shortDescription": "A thick black sesame cookie studded with white chocolate chips.",
+    "description": "",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/black_sesame_cookie_top.jpg"
+    ],
+    "category": "pastry",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "allergens": "gluten, dairy, eggs, sesame, chocolate"
+  },
+  {
+    "id": "595",
+    "name": "Cardamom Buns",
+    "slug": "cardamom-buns",
+    "price": 5,
+    "currency": "AUD",
+    "shortDescription": "A 6 pack of our classic Swedish cardamom buns.",
+    "description": "Pricing currently being updated.",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/c1.png",
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/c2.png"
+    ],
+    "category": "buns",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "ingredients": "sustainable premium white WHEAT flour (Wholegrain Milling), filtered water, butter, caster sugar, yeast, ALMOND meal, cardamom, pink lake salt, vanilla essence.",
+    "allergens": "contains almond. May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts.",
+    "variants": [
+      {
+        "id": "933",
+        "name": "1 cardamom bun",
+        "price": 5
+      }
+    ]
+  },
+  {
+    "id": "784",
+    "name": "Cinnamon Buns",
+    "slug": "cinnamon-buns",
+    "price": 5,
+    "currency": "AUD",
+    "shortDescription": "A 6 pack of our classic Swedish cinnamon buns.",
+    "description": "Pricing currently being updated.",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/c2-1.png"
+    ],
+    "category": "buns",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "ingredients": "sustainable premium white WHEAT flour (Wholegrain Milling), filtered water, butter, caster sugar, yeast, ALMOND meal, cinnamon, pink lake salt (Mount Zero).",
+    "allergens": "contains almond. May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts.",
+    "variants": [
+      {
+        "id": "1262",
+        "name": "1 cinnamon bun",
+        "price": 5
+      }
+    ]
+  },
+  {
+    "id": "623",
+    "name": "Community sourdough",
+    "slug": "community-sourdough",
+    "price": 10,
+    "currency": "AUD",
+    "shortDescription": "Our 900 gm classic community Sourdough.",
+    "description": "Simply sourdough bread made from organic or sustainable stone milled regional grains. Handcrafted, slow fermented over two days and stone baked to create deep flavours and a delicious crust. Perfect paired with soup, made into sandwiches, or as toast with breakfast.",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour2-1.png",
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/product_06-640x640-1.png"
+    ],
+    "category": "Sourdough Bread",
+    "featured": true,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "ingredients": "sustainable premium white WHEAT flour, sustainable RYE flour, sustainable SPELT flour, sustainable EMMER flour (Wholegrain Milling), filtered water, pink lake salt (Mount Zero).",
+    "allergens": "May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts."
+  },
+  {
+    "id": "622",
+    "name": "Danish Rye Sourdough",
+    "slug": "danish-rye-sourdough",
+    "price": 12,
+    "currency": "AUD",
+    "shortDescription": "800gm. A bread with 100% rye is a whole-grain bread.",
+    "description": "It’s much healthier than your typical wheat bread. It has fewer carbohydrates, more fibres , and generally fills your stomach nicely (per calorie eaten). The bread has a soft crust, a dense but soft crumb, a nice chew, and a slight crunch from the moist seeds.",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/unnamed-1.png",
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/sourn1.png"
+    ],
+    "category": "Sourdough Bread",
+    "featured": true,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "ingredients": "Organic rye flour, organic broken and whole rye grains, flax seeds,, sunflower seeds, malt, water, sourdough, sea salt. Sprinkled with rough rolled rye flakes on top.",
+    "allergens": "CONTAINS SESAME SEEDS. May contain traces of milk, egg, soy, peanuts and tree nuts."
+  },
+  {
+    "id": "787",
+    "name": "Large Cheesecake",
+    "slug": "large-cheesecake",
+    "price": 20,
+    "currency": "AUD",
+    "shortDescription": "Our take on a Basque-style cheesecake. It has a silky smooth interior and caramelised crust due to our unusual baking method.",
+    "description": "",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/stor_cheesecake-1.jpg"
+    ],
+    "category": "pastry",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "allergens": "gluten, dairy, eggs"
+  },
+  {
+    "id": "733",
+    "name": "Pain au Chocolat",
+    "slug": "pain-au-chocolat",
+    "price": 40,
+    "currency": "AUD",
+    "shortDescription": "Our classic pain au chocolat; croissant dough rolled with sticks of dark, bittersweet chocolate.",
+    "description": "",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/pain-au-choc-1.jpg"
+    ],
+    "category": "pastry",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "allergens": "gluten, dairy, eggs, sulfites, chocolate"
+  },
+  {
+    "id": "624",
+    "name": "Signature Country sourdough",
+    "slug": "the-simply-sourdough",
+    "price": 10,
+    "currency": "AUD",
+    "shortDescription": "Our classic 900gm Simply Sourdough",
+    "description": "",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour1.png",
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour2.png"
+    ],
+    "category": "Sourdough Bread",
+    "featured": true,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "ingredients": "sustainable premium white WHEAT flour, sustainable RYE flour, sustainable SPELT flour, sustainable EMMER flour (Wholegrain Milling), filtered water, pink lake salt (Mount Zero).",
+    "allergens": "May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts."
+  },
+  {
+    "id": "625",
+    "name": "Tinned Simply Sourdough",
+    "slug": "tinned-simply-sourdough",
+    "price": 10,
+    "currency": "AUD",
+    "shortDescription": "A softer, family sized sourdough built for the table. Toasts beautifully, holds up to a sandwich, keeps for days. The one most of our regulars take home each bake day.",
+    "description": "",
+    "allergens": "Contains sesame. May contain traces of milk, egg, soy, peanuts and tree nuts.",
+    "images": [
+      "/brand/tinted-rack.jpg",
+      "/brand/tinted-pair.jpg"
+    ],
+    "category": "Sourdough Bread",
+    "featured": true,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "789",
+    "name": "Spandauer",
+    "slug": "spandauer",
+    "price": 35,
+    "currency": "AUD",
+    "shortDescription": "Croissant dough with a rich pastry cream baked in. It is similar to a Portuguese custard tart.",
+    "description": "",
+    "images": [
+      "https://simplysourdough.shop/wp-content/uploads/2023/08/spandauer.jpg"
+    ],
+    "category": "pastry",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z",
+    "allergens": "gluten, dairy, eggs"
+  },
+  {
+    "id": "851",
+    "name": "Subscription",
+    "slug": "subscription",
+    "price": 10,
+    "currency": "AUD",
+    "shortDescription": "This is Subscription Product",
+    "description": "This is Subscription",
+    "images": [],
+    "category": "subscription",
+    "featured": false,
+    "inStock": true,
+    "createdAt": "2023-08-01T00:00:00.000Z",
+    "updatedAt": "2023-08-01T00:00:00.000Z"
+  }
+]

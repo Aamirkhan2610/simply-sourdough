@@ -1,3 +1,4 @@
+import catalog from "./products.json";
 import type {
   InstagramPost,
   Order,
@@ -8,13 +9,13 @@ import type {
 
 export const siteSettings: SiteSettings = {
   businessName: "Simply Sourdough",
-  tagline: "Beautiful breads & delightful buns inspired by Sweden",
+  tagline: "Artisan sourdough and Swedish buns, baked fresh in Lismore",
   email: "farid@simplysourdough.shop",
   phone: "+61 478 481 989",
   whatsapp: "+61478481989",
   address: "Embassy Arcade, 3/97 Keen St",
   city: "Lismore NSW 2480, Australia",
-  hours: "Mon, Wed & Fri · 8:00 AM – sold out",
+  hours: "Tue–Fri 8:00 AM–5:00 PM · Sat 7:00 AM–2:00 PM · or until sold out",
   instagramUrl: "https://www.instagram.com/simplysourdough2023/",
   facebookUrl: "https://www.facebook.com/profile.php?id=61551937266868&mibextid=LQQJ4d",
   googleReviewsUrl: "https://share.google/n2bqUz1UaKPGnJzbU",
@@ -24,291 +25,79 @@ export const siteSettings: SiteSettings = {
 
 const now = new Date().toISOString();
 
-export const seedProducts: Product[] = [
-  {
-    id: "624",
-    name: "Signature Country Sourdough",
-    slug: "the-simply-sourdough",
-    price: 10,
-    currency: "AUD",
-    shortDescription:
-      "Our classic 900g Simply Sourdough — deep flavour, crackling crust, slow fermented over two days.",
-    description:
-      "Handcrafted artisan country loaf made with sustainable stone-milled grains. Perfect for soup, sandwiches, or morning toast.",
-    ingredients:
-      "Sustainable premium white wheat flour, rye flour, spelt flour, emmer flour (Wholegrain Milling), filtered water, pink lake salt (Mount Zero).",
-    allergens: "May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour1.png",
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour2.png",
-    ],
-    category: "Sourdough Bread",
-    featured: true,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "623",
-    name: "Community Sourdough",
-    slug: "community-sourdough",
-    price: 10,
-    currency: "AUD",
-    shortDescription:
-      "Our 900g classic community sourdough — organic or sustainable regional grains, stone baked.",
-    description:
-      "Simply sourdough bread made from organic or sustainable stone milled regional grains. Handcrafted, slow fermented over two days and stone baked for deep flavours and a delicious crust.",
-    ingredients:
-      "Sustainable premium white wheat flour, rye flour, spelt flour, emmer flour (Wholegrain Milling), filtered water, pink lake salt (Mount Zero).",
-    allergens: "May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour2-1.png",
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/product_06-640x640-1.png",
-    ],
-    category: "Sourdough Bread",
-    featured: true,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "622",
-    name: "Danish Rye Sourdough",
-    slug: "danish-rye-sourdough",
-    price: 12,
-    currency: "AUD",
-    shortDescription:
-      "800g whole-grain 100% rye — dense, soft crumb with a gentle seed crunch.",
-    description:
-      "A traditional Danish rye loaf with fewer carbohydrates and more fibre. Soft crust, dense but soft crumb, and a slight crunch from moist seeds.",
-    ingredients:
-      "Organic rye flour, organic broken and whole rye grains, flax seeds, sunflower seeds, malt, water, sourdough, sea salt. Sprinkled with rough rolled rye flakes.",
-    allergens: "Contains sesame seeds. May contain traces of milk, egg, soy, peanuts and tree nuts.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/unnamed-1.png",
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/sourn1.png",
-    ],
-    category: "Sourdough Bread",
-    featured: true,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "595",
-    name: "Cardamom Buns",
-    slug: "cardamom-buns",
-    price: 5,
-    currency: "AUD",
-    shortDescription: "Classic Swedish cardamom buns — fragrant, buttery, and soft.",
-    description:
-      "Our classic Swedish cardamom buns. Available as a single bun or a 6-pack.",
-    ingredients:
-      "Sustainable premium white wheat flour (Wholegrain Milling), filtered water, butter, caster sugar, yeast, almond meal, cardamom, pink lake salt, vanilla essence.",
-    allergens:
-      "Contains almond. May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/c1.png",
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/c2.png",
-    ],
-    category: "buns",
-    featured: true,
-    inStock: true,
-    variants: [
-      { id: "933", name: "1 cardamom bun", price: 5 },
-      { id: "932", name: "6 cardamom buns", price: 25 },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "784",
-    name: "Cinnamon Buns",
-    slug: "cinnamon-buns",
-    price: 5,
-    currency: "AUD",
-    shortDescription: "A classic Swedish cinnamon bun pack — pure bakery comfort.",
-    description:
-      "Our classic Swedish cinnamon buns. Transported us right back to Sweden. Available as a single or 6-pack.",
-    ingredients:
-      "Sustainable premium white wheat flour (Wholegrain Milling), filtered water, butter, caster sugar, yeast, almond meal, cinnamon, pink lake salt (Mount Zero).",
-    allergens:
-      "Contains almond. May contain traces of milk, egg, soy, peanuts, sesame seeds and tree nuts.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/c2-1.png",
-    ],
-    category: "buns",
-    featured: true,
-    inStock: true,
-    variants: [
-      { id: "931", name: "1 cinnamon bun", price: 5 },
-      { id: "930", name: "6 cinnamon buns", price: 25 },
-    ],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "733",
-    name: "Pain au Chocolat",
-    slug: "pain-au-chocolat",
-    price: 8,
-    currency: "AUD",
-    shortDescription:
-      "Croissant dough rolled with sticks of dark, bittersweet chocolate.",
-    description:
-      "Our classic pain au chocolat — flaky laminated dough and rich dark chocolate.",
-    allergens: "Gluten, dairy, eggs, sulfites, chocolate.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/pain-au-choc-1.jpg",
-    ],
-    category: "pastry",
-    featured: true,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "789",
-    name: "Spandauer",
-    slug: "spandauer",
-    price: 7,
-    currency: "AUD",
-    shortDescription:
-      "Croissant dough with rich pastry cream — similar to a Portuguese custard tart.",
-    description:
-      "A Nordic pastry classic: laminated dough filled with silky pastry cream.",
-    allergens: "Gluten, dairy, eggs.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/spandauer.jpg",
-    ],
-    category: "pastry",
-    featured: false,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "787",
-    name: "Large Cheesecake",
-    slug: "large-cheesecake",
-    price: 20,
-    currency: "AUD",
-    shortDescription:
-      "Basque-style cheesecake with a silky interior and caramelised crust.",
-    description:
-      "Our take on a Basque-style cheesecake. Silky smooth interior and caramelised crust from our unusual baking method.",
-    allergens: "Gluten, dairy, eggs.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/stor_cheesecake-1.jpg",
-    ],
-    category: "pastry",
-    featured: true,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "791",
-    name: "Black Sesame Cookie",
-    slug: "black-sesame-cookie",
-    price: 6,
-    currency: "AUD",
-    shortDescription:
-      "A thick black sesame cookie studded with white chocolate chips.",
-    description:
-      "Nutty black sesame meets creamy white chocolate in a thick, bakery-style cookie.",
-    allergens: "Gluten, dairy, eggs, sesame, chocolate.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/black_sesame_cookie_top.jpg",
-    ],
-    category: "pastry",
-    featured: false,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: "851",
-    name: "Weekly Bread Subscription",
-    slug: "subscription",
-    price: 40,
-    currency: "AUD",
-    shortDescription:
-      "Fresh sourdough delivered on a weekly cadence — never miss a loaf.",
-    description:
-      "Subscribe for regular artisan breads. Choose your favourites and pick up fresh on bake days.",
-    images: [
-      "https://simplysourdough.shop/wp-content/uploads/2023/08/sour1.png",
-    ],
-    category: "subscription",
-    featured: false,
-    inStock: true,
-    createdAt: now,
-    updatedAt: now,
-  },
-];
+export const seedProducts: Product[] = catalog as Product[];
 
-/** Highlighted Google-style customer reviews for Simply Sourdough Lismore */
+/** Google reviews Shaymah chose to show beside the 5.0 average. */
 export const seedReviews: Review[] = [
   {
-    id: "r1",
-    author: "Sarah M.",
+    id: "r-mandy",
+    author: "Mandy Thomas",
     rating: 5,
-    text: "The best sourdough in the Northern Rivers. Farid’s loaves have that perfect crackle and deep flavour you only get from true slow fermentation. Cardamom buns are addictive!",
-    date: "2025-11-12",
+    text: "My Granny Svea was Swedish, arriving at her country gate as a child, was to be filled with the aroma of fruit buns in the oven, that had been loving prepared in the very early hours of the morning .. just for us. This little shop has that same heart in is beautiful breads and delivered with such warm friendly service. Every morsel .. pure magic.",
+    date: "2026-07-29",
     source: "google",
     featured: true,
-    avatarInitials: "SM",
+    avatarInitials: "MT",
   },
   {
-    id: "r2",
-    author: "James T.",
+    id: "r-ian",
+    author: "Ian Cooper",
     rating: 5,
-    text: "Authentic Scandinavian baking right here in Lismore. Danish rye is outstanding — dense, seedy, and so satisfying. Worth getting in early before they sell out.",
-    date: "2025-10-03",
+    text: "This bakery is absolutely amazing! Sourdough unlike any other, their products are so delicious, to die for!! The baker and his staff are such lovely people, don't pass this one if in the area, absolute 10 out of 10 xxx thank you Simply Sourdough.",
+    date: "2026-02-28",
     source: "google",
     featured: true,
-    avatarInitials: "JT",
+    avatarInitials: "IC",
   },
   {
-    id: "r3",
-    author: "Elena R.",
+    id: "r-grace",
+    author: "Grace Cameron",
     rating: 5,
-    text: "Pain au chocolat that rivals anything I’ve had in Europe. Fresh, flaky, and made with real care. Simply Sourdough is a gem for our community.",
-    date: "2026-01-18",
+    text: "Really flavourful bread and pastry. All three things we've tried so far have been special (cinnamon bun, cardamom and custard doughnut and rye and pumpkin seed sourdough bread). A little hole in the wall in a little alley. I'm so glad we followed our nose when we smelled that delicious smell walking past.",
+    date: "2025-09-29",
     source: "google",
     featured: true,
-    avatarInitials: "ER",
+    avatarInitials: "GC",
   },
   {
-    id: "r4",
-    author: "Michael K.",
+    id: "r-violet",
+    author: "Violet Renner-Davis",
     rating: 5,
-    text: "Community sourdough is our household staple. Beautiful crust, soft open crumb, and no weird additives — just honest bread. Highly recommend.",
-    date: "2026-02-22",
+    text: "wow! just wow! we too smelt the cinnamon rolls from the footpath and was drawn down the alleyway to this cute little shop. we were served a cinnamon scroll right from the oven and it was so tasty and warm! i definitely recommend!",
+    date: "2026-08-29",
     source: "google",
     featured: true,
-    avatarInitials: "MK",
+    avatarInitials: "VR",
   },
   {
-    id: "r5",
-    author: "Priya N.",
+    id: "r-gem",
+    author: "Gem Star",
     rating: 5,
-    text: "The Basque-style cheesecake is pure luxury. Silky inside, caramelised top — we ordered one for a birthday and everyone asked where it was from.",
-    date: "2026-03-09",
+    text: "OMG the cinnamon scroll with a hint of cardamom was divine! I followed the scent of fresh bread into the arcade, and was lucky enough to get freshly baked warm cinnamon scroll. Soft bun, perfectly sweet, spiced and warm.. Soo good.",
+    date: "2026-08-29",
     source: "google",
     featured: true,
-    avatarInitials: "PN",
+    avatarInitials: "GS",
   },
   {
-    id: "r6",
-    author: "David L.",
+    id: "r-dani",
+    author: "Dani T",
     rating: 5,
-    text: "Friendly service and bread that actually tastes like bread should. Supporting local artisans like Simply Sourdough is a no-brainer.",
-    date: "2026-04-14",
+    text: "I was only walking past when the familiar sent caught me off guard the aroma of the cinnamon rolls from my childhood my grandmother would make who comes from Finland, I can say these cinnamon rolls are some of the best and give any Nordic grandma a run for their money! I can't wait for my next trip back :)",
+    date: "2026-07-29",
     source: "google",
-    featured: false,
-    avatarInitials: "DL",
+    featured: true,
+    avatarInitials: "DT",
+  },
+  {
+    id: "r-gustaf",
+    author: "Gustaf Brithén",
+    rating: 5,
+    text: "A tiny little bakery you'll only find if you smell your way there. High quality and organic. Traditional handmade Scandinavian products.",
+    date: "2025-09-29",
+    source: "google",
+    featured: true,
+    avatarInitials: "GB",
   },
 ];
 

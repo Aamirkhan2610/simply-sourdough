@@ -34,7 +34,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
             <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-white">
               <Image
-                src="/logo.png"
+                src="/brand/mark.svg"
                 alt="Simply Sourdough"
                 fill
                 className="object-contain p-0.5"
@@ -97,7 +97,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2 md:hidden">
               <span className="relative h-8 w-8 overflow-hidden rounded-full bg-white ring-1 ring-[var(--border)]">
                 <Image
-                  src="/logo.png"
+                  src="/brand/mark.svg"
                   alt=""
                   fill
                   className="object-contain p-0.5"

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cormorant_Garamond, DM_Serif_Display, Inter, Manrope, Tenor_Sans } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import "./globals.css";
+import "./brochure.css";
 
 const body = Manrope({
   variable: "--font-body",
@@ -18,29 +20,46 @@ const display = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const serif = DM_Serif_Display({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
+const tenor = Tenor_Sans({
+  variable: "--font-tenor",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Simply Sourdough · Artisan Bakery Lismore",
+    default: "Simply Sourdough · Artisan Sourdough & Swedish Buns, Lismore",
     template: "%s · Simply Sourdough",
   },
   description:
-    "Beautiful breads and delightful buns inspired by Sweden. Artisan sourdough bakery in Lismore NSW — slow fermented, naturally made.",
+    "Artisan sourdough and Swedish buns, baked fresh in Lismore. Stone baked, slow fermented, inside Embassy Arcade.",
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo.png", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-    shortcut: "/favicon.ico",
+    icon: [{ url: "/brand/mark.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/brand/mark.svg" }],
+    shortcut: "/brand/mark.svg",
   },
   openGraph: {
     title: "Simply Sourdough",
-    description: "Beautiful breads & delightful buns inspired by Sweden",
+    description:
+      "Artisan sourdough and Swedish buns, baked fresh in Lismore. Stone baked, slow fermented, inside Embassy Arcade.",
     url: "https://simplysourdough.shop",
     siteName: "Simply Sourdough",
     locale: "en_AU",
     type: "website",
-    images: [{ url: "/logo.png", alt: "Simply Sourdough Organic" }],
+    images: [{ url: "/brand/mark.svg", alt: "Simply Sourdough" }],
   },
 };
 
@@ -50,12 +69,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-AU" className={`${body.variable} ${display.variable} h-full`}>
+    <html lang="en-AU" className={`${body.variable} ${display.variable} ${inter.variable} ${serif.variable} ${tenor.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <WhatsAppButton />
         </CartProvider>
       </body>
     </html>

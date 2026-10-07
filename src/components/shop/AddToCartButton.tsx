@@ -8,9 +8,11 @@ import type { Product, ProductVariant } from "@/lib/types";
 export function AddToCartButton({
   product,
   variant,
+  className,
 }: {
   product: Product;
   variant?: ProductVariant;
+  className?: string;
 }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
@@ -36,7 +38,7 @@ export function AddToCartButton({
       type="button"
       onClick={handleAdd}
       disabled={!product.inStock}
-      className="btn btn-primary w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-50"
+      className={`btn btn-primary disabled:cursor-not-allowed disabled:opacity-50 ${className ?? "w-full sm:w-auto"}`}
     >
       {added ? (
         <>

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MapPin, Phone, Mail } from "lucide-react";
@@ -22,7 +21,7 @@ function FacebookIcon({ className }: { className?: string }) {
 
 export function Footer() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.startsWith("/admin") || pathname === "/") return null;
 
   return (
     <footer className="mt-auto bg-espresso text-parchment">
@@ -30,14 +29,8 @@ export function Footer() {
         <div className="container-page grid gap-10 py-16 md:grid-cols-12">
           <div className="md:col-span-5">
             <div className="mb-5 flex items-center gap-3 font-display text-2xl font-bold">
-              <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-white shadow-sm">
-                <Image
-                  src="/logo.png"
-                  alt="Simply Sourdough Organic"
-                  fill
-                  className="object-contain p-0.5"
-                  sizes="56px"
-                />
+              <span className="footer-logo">
+                <img src="/brand/mark.svg" alt="" />
               </span>
               Simply Sourdough
             </div>

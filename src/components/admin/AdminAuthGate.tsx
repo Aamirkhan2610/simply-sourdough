@@ -71,7 +71,7 @@ export function AdminAuthGate({ children }: { children: React.ReactNode }) {
           <div className="mb-6 flex flex-col items-center text-center">
             <span className="relative mb-4 h-16 w-16 overflow-hidden rounded-full bg-parchment ring-1 ring-[var(--border)]">
               <Image
-                src="/logo.png"
+                src="/brand/mark.svg"
                 alt="Simply Sourdough"
                 fill
                 className="object-contain p-0.5"
