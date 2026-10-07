@@ -55,10 +55,11 @@ Or connect the GitHub repo in the Vercel dashboard and deploy.
 
 ## Order emails
 
-Which inbox receives website orders is set in the admin panel at
-**`/admin/settings`** — no code change or redeploy required. The page also holds
-the Zoho SMTP host, port, username and password used to send the mail, plus an
-optional CC list and a **Send test** button to confirm the inbox works.
+One Zoho account, set in the admin panel at **`/admin/settings`**, is used
+everywhere: it signs in to send mail, it is the From address, and it is the
+inbox every website order lands in. No code change or redeploy required to
+change it. The page also has an optional CC list and a **Send test** button
+to confirm the inbox actually works.
 
 Settings are stored in Postgres (`app_settings` table, created automatically on
 first use) so they survive restarts and redeploys. To connect a database:
@@ -78,9 +79,8 @@ saves anything, so order delivery is unchanged until the settings are edited:
 | Variable | Purpose |
 |----------|---------|
 | `SMTP_HOST` / `SMTP_PORT` | Zoho SMTP server, defaults `smtp.zoho.com` / `465` |
-| `SMTP_USER` / `SMTP_PASS` | Zoho account the site signs in as |
-| `SMTP_FROM` | From address, defaults to `SMTP_USER` |
-| `ORDER_EMAIL_TO` | Default order inbox before one is saved in the admin panel |
+| `SMTP_USER` / `SMTP_PASS` | The Zoho account used until one is saved in the admin panel |
+| `ORDER_EMAIL_CC` | Default CC list before one is saved in the admin panel |
 | `ADMIN_SESSION_SECRET` | Signs the admin session cookie — set this in production |
 
 ## Notes

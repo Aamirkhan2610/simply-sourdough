@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    /* an empty body just means "use the saved recipient" */
+    /* an empty body just means "use the saved account" */
   }
 
   let mailer;
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof MailerNotConfiguredError) {
       return NextResponse.json(
-        { error: "Add the SMTP password before sending a test." },
+        { error: "Add the Zoho password before sending a test." },
         { status: 400 }
       );
     }
@@ -52,9 +52,9 @@ export async function POST(request: Request) {
       text: [
         "This is a test from the Simply Sourdough admin panel.",
         "",
-        `New website orders are being sent to: ${to}`,
+        `This Zoho account sends and receives website orders: ${mailer.settings.email}`,
         cc.length ? `Copied to: ${cc.join(", ")}` : "No CC addresses set.",
-        `Sent through: ${mailer.settings.smtpHost}:${mailer.settings.smtpPort} as ${mailer.settings.smtpUser}`,
+        `Sent through: ${mailer.settings.smtpHost}:${mailer.settings.smtpPort}`,
         "",
         "If you received this, order notifications will arrive here too.",
       ].join("\n"),

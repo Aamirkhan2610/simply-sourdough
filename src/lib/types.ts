@@ -88,24 +88,19 @@ export interface SiteSettings {
   aboutStory: string;
 }
 
-/** Where order notifications go, and the Zoho SMTP account used to send them. */
+/**
+ * One Zoho account used everywhere: it signs in to SMTP, it is the From
+ * address, and it is the inbox that receives every website order.
+ */
 export interface EmailSettings {
-  /** Inbox that receives every new website order. */
-  orderRecipient: string;
-  /** Optional extra inboxes, comma separated. */
-  ccRecipients: string;
-  /** Address shown in the From header. Must be the SMTP account or an alias of it. */
-  fromAddress: string;
+  /** The Zoho email address — SMTP login, From header, and order inbox. */
+  email: string;
+  password: string;
   smtpHost: string;
   smtpPort: number;
-  smtpUser: string;
-  smtpPassword: string;
+  /** Optional extra inboxes to copy orders to, comma separated. */
+  ccRecipients: string;
   /** Send the customer their own confirmation copy. */
   sendCustomerConfirmation: boolean;
   updatedAt: string;
 }
-
-/** Email settings as sent to the browser — the password is never included. */
-export type SafeEmailSettings = Omit<EmailSettings, "smtpPassword"> & {
-  smtpPasswordSet: boolean;
-};

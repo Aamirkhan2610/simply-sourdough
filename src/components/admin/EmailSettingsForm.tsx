@@ -1,39 +1,33 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import { AlertTriangle, Database, Mail, Save, Send } from "lucide-react";
-import type { SafeEmailSettings } from "@/lib/types";
+import { AlertTriangle, Database, Save, Send } from "lucide-react";
+import type { EmailSettings } from "@/lib/types";
 
 type Storage = "database" | "memory";
 
 interface Draft {
-  orderRecipient: string;
-  ccRecipients: string;
-  fromAddress: string;
+  email: string;
+  password: string;
   smtpHost: string;
   smtpPort: string;
-  smtpUser: string;
-  smtpPassword: string;
+  ccRecipients: string;
   sendCustomerConfirmation: boolean;
 }
 
-function toDraft(settings: SafeEmailSettings): Draft {
+function toDraft(settings: EmailSettings): Draft {
   return {
-    orderRecipient: settings.orderRecipient,
-    ccRecipients: settings.ccRecipients,
-    fromAddress: settings.fromAddress,
+    email: settings.email,
+    password: settings.password,
     smtpHost: settings.smtpHost,
     smtpPort: String(settings.smtpPort),
-    smtpUser: settings.smtpUser,
-    // Never prefilled — the server does not hand the password back.
-    smtpPassword: "",
+    ccRecipients: settings.ccRecipients,
     sendCustomerConfirmation: settings.sendCustomerConfirmation,
   };
 }
 
 export function EmailSettingsForm() {
   const [draft, setDraft] = useState<Draft | null>(null);
-  const [passwordSet, setPasswordSet] = useState(false);
   const [storage, setStorage] = useState<Storage>("memory");
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loadError, setLoadError] = useState("");
@@ -43,17 +37,13 @@ export function EmailSettingsForm() {
   const [testing, setTesting] = useState(false);
   const [testTarget, setTestTarget] = useState("");
 
-  const apply = useCallback(
-    (settings: SafeEmailSettings, mode: Storage) => {
-      setDraft(toDraft(settings));
-      setPasswordSet(settings.smtpPasswordSet);
-      setStorage(mode);
-      setUpdatedAt(
-        new Date(settings.updatedAt).getTime() > 0 ? settings.updatedAt : null
-      );
-    },
-    []
-  );
+  const apply = useCallback((settings: EmailSettings, mode: Storage) => {
+    setDraft(toDraft(settings));
+    setStorage(mode);
+    setUpdatedAt(
+      new Date(settings.updatedAt).getTime() > 0 ? settings.updatedAt : null
+    );
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -67,7 +57,7 @@ export function EmailSettingsForm() {
           return;
         }
         const body = await res.json();
-        apply(body.settings as SafeEmailSettings, body.storage as Storage);
+        apply(body.settings as EmailSettings, body.storage as Storage);
       } catch {
         if (active) setLoadError("Could not load the email settings.");
       }
@@ -100,8 +90,8 @@ export function EmailSettingsForm() {
         setError(body.error || "Could not save these settings.");
         return;
       }
-      apply(body.settings as SafeEmailSettings, body.storage as Storage);
-      setNotice(`Saved. New orders will go to ${body.settings.orderRecipient}.`);
+      apply(body.settings as EmailSettings, body.storage as Storage);
+      setNotice(`Saved. Orders will now go to ${body.settings.email}.`);
     } catch {
       setError("Could not reach the server. Please try again.");
     } finally {
@@ -162,89 +152,62 @@ export function EmailSettingsForm() {
           <div className="text-sm text-amber-900">
             <p className="font-semibold">No database connected</p>
             <p className="mt-0.5">
-              Changes saved here will be lost when the site restarts. Connect a
-              Postgres database in Vercel so this setting sticks.
+              Changes saved here will be lost when the site restarts. Connect
+              a Postgres database in Vercel so this setting sticks.
             </p>
           </div>
         </div>
       )}
 
       <section className="card-surface space-y-5 p-6">
-        <div className="flex items-center gap-2">
-          <Mail className="h-5 w-5 text-clay" />
+        <div>
           <h2 className="font-display text-xl font-semibold text-espresso">
-            Order notifications
+            Zoho email account
           </h2>
+          <p className="mt-1 text-sm text-muted">
+            One Zoho account, used everywhere: it signs in to send mail, it
+            appears as the sender, and it is the inbox every website order
+            arrives in.
+          </p>
         </div>
 
         <div>
           <label
-            htmlFor="orderRecipient"
+            htmlFor="email"
             className="mb-1.5 block text-sm font-semibold text-espresso"
           >
-            Send new orders to
+            Zoho email address
           </label>
           <input
-            id="orderRecipient"
+            id="email"
             className="admin-input"
             type="email"
+            autoComplete="off"
             required
-            value={draft.orderRecipient}
-            onChange={(e) => update("orderRecipient", e.target.value)}
+            value={draft.email}
+            onChange={(e) => update("email", e.target.value)}
             placeholder="orders@simplysourdough.shop"
           />
-          <p className="mt-1.5 text-xs text-muted">
-            Every order placed on the website arrives in this inbox.
-          </p>
         </div>
 
         <div>
           <label
-            htmlFor="ccRecipients"
+            htmlFor="password"
             className="mb-1.5 block text-sm font-semibold text-espresso"
           >
-            Also copy to <span className="font-normal text-muted">(optional)</span>
+            Password
           </label>
           <input
-            id="ccRecipients"
+            id="password"
             className="admin-input"
-            value={draft.ccRecipients}
-            onChange={(e) => update("ccRecipients", e.target.value)}
-            placeholder="farid@simplysourdough.shop, kitchen@simplysourdough.shop"
+            type="text"
+            autoComplete="off"
+            required
+            value={draft.password}
+            onChange={(e) => update("password", e.target.value)}
+            placeholder="Zoho app password"
           />
-          <p className="mt-1.5 text-xs text-muted">
-            Separate several addresses with commas.
-          </p>
         </div>
-
-        <label className="flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            className="mt-0.5 h-4 w-4 accent-clay"
-            checked={draft.sendCustomerConfirmation}
-            onChange={(e) =>
-              update("sendCustomerConfirmation", e.target.checked)
-            }
-          />
-          <span className="text-sm">
-            <span className="font-semibold text-espresso">
-              Email the customer a confirmation
-            </span>
-            <span className="block text-muted">
-              Sends the customer their own copy of the order.
-            </span>
-          </span>
-        </label>
-      </section>
-
-      <section className="card-surface space-y-5 p-6">
-        <h2 className="font-display text-xl font-semibold text-espresso">
-          Zoho SMTP account
-        </h2>
-        <p className="-mt-3 text-sm text-muted">
-          The account the website signs in with to send mail. Leave this as it
-          is unless the Zoho mailbox itself changes.
-        </p>
 
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
@@ -281,72 +244,47 @@ export function EmailSettingsForm() {
               onChange={(e) => update("smtpPort", e.target.value)}
               placeholder="465"
             />
-            <p className="mt-1.5 text-xs text-muted">
-              465 for SSL, 587 for TLS.
-            </p>
-          </div>
-          <div>
-            <label
-              htmlFor="smtpUser"
-              className="mb-1.5 block text-sm font-semibold text-espresso"
-            >
-              Username
-            </label>
-            <input
-              id="smtpUser"
-              className="admin-input"
-              autoComplete="off"
-              required
-              value={draft.smtpUser}
-              onChange={(e) => update("smtpUser", e.target.value)}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="smtpPassword"
-              className="mb-1.5 block text-sm font-semibold text-espresso"
-            >
-              Password
-            </label>
-            <input
-              id="smtpPassword"
-              className="admin-input"
-              type="password"
-              autoComplete="new-password"
-              value={draft.smtpPassword}
-              onChange={(e) => update("smtpPassword", e.target.value)}
-              placeholder={
-                passwordSet ? "Saved — leave blank to keep it" : "Zoho app password"
-              }
-            />
-            <p className="mt-1.5 text-xs text-muted">
-              {passwordSet
-                ? "A password is saved. Leave this blank to keep using it."
-                : "No password saved yet."}
-            </p>
           </div>
         </div>
 
         <div>
           <label
-            htmlFor="fromAddress"
+            htmlFor="ccRecipients"
             className="mb-1.5 block text-sm font-semibold text-espresso"
           >
-            From address
+            Also copy orders to{" "}
+            <span className="font-normal text-muted">(optional)</span>
           </label>
           <input
-            id="fromAddress"
+            id="ccRecipients"
             className="admin-input"
-            type="email"
-            value={draft.fromAddress}
-            onChange={(e) => update("fromAddress", e.target.value)}
-            placeholder={draft.smtpUser}
+            value={draft.ccRecipients}
+            onChange={(e) => update("ccRecipients", e.target.value)}
+            placeholder="kitchen@simplysourdough.shop"
           />
           <p className="mt-1.5 text-xs text-muted">
-            Must be the Zoho account above or one of its verified aliases, or
-            Zoho will reject the message.
+            Separate several addresses with commas.
           </p>
         </div>
+
+        <label className="flex cursor-pointer items-start gap-3">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 accent-clay"
+            checked={draft.sendCustomerConfirmation}
+            onChange={(e) =>
+              update("sendCustomerConfirmation", e.target.checked)
+            }
+          />
+          <span className="text-sm">
+            <span className="font-semibold text-espresso">
+              Email the customer a confirmation
+            </span>
+            <span className="block text-muted">
+              Sends the customer their own copy of the order.
+            </span>
+          </span>
+        </label>
       </section>
 
       {error && (
@@ -382,8 +320,8 @@ export function EmailSettingsForm() {
             Send a test email
           </p>
           <p className="mb-3 text-xs text-muted">
-            Uses the settings already saved, so save first if you just changed
-            something.
+            Uses the settings already saved, so save first if you just
+            changed something.
           </p>
           <div className="flex flex-wrap gap-2">
             <input
@@ -391,7 +329,7 @@ export function EmailSettingsForm() {
               type="email"
               value={testTarget}
               onChange={(e) => setTestTarget(e.target.value)}
-              placeholder={draft.orderRecipient || "you@example.com"}
+              placeholder={draft.email || "you@example.com"}
             />
             <button
               type="button"

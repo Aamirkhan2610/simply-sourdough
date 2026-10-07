@@ -6,7 +6,6 @@ import {
   isValidEmail,
   parseRecipients,
   saveEmailSettings,
-  toSafeEmailSettings,
 } from "@/lib/email-settings";
 import type { EmailSettings } from "@/lib/types";
 
@@ -17,10 +16,7 @@ function unauthorized() {
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) return unauthorized();
   const settings = await getEmailSettings();
-  return NextResponse.json({
-    settings: toSafeEmailSettings(settings),
-    storage: describeStorage(),
-  });
+  return NextResponse.json({ settings, storage: describeStorage() });
 }
 
 export async function PUT(request: Request) {
@@ -33,10 +29,18 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const orderRecipient = String(body.orderRecipient ?? "").trim();
-  if (!isValidEmail(orderRecipient)) {
+  const email = String(body.email ?? "").trim();
+  if (!isValidEmail(email)) {
     return NextResponse.json(
-      { error: "Enter a valid email address for order notifications." },
+      { error: "Enter a valid Zoho email address." },
+      { status: 400 }
+    );
+  }
+
+  const password = String(body.password ?? "").trim();
+  if (!password) {
+    return NextResponse.json(
+      { error: "Enter the Zoho account password." },
       { status: 400 }
     );
   }
@@ -48,14 +52,6 @@ export async function PUT(request: Request) {
   if (invalidCc) {
     return NextResponse.json(
       { error: `"${invalidCc}" is not a valid email address.` },
-      { status: 400 }
-    );
-  }
-
-  const fromAddress = String(body.fromAddress ?? "").trim();
-  if (fromAddress && !isValidEmail(fromAddress)) {
-    return NextResponse.json(
-      { error: "Enter a valid From address." },
       { status: 400 }
     );
   }
@@ -76,29 +72,16 @@ export async function PUT(request: Request) {
     );
   }
 
-  const smtpUser = String(body.smtpUser ?? "").trim();
-  if (!smtpUser) {
-    return NextResponse.json(
-      { error: "Enter the SMTP username." },
-      { status: 400 }
-    );
-  }
-
   try {
     const saved = await saveEmailSettings({
-      orderRecipient,
-      ccRecipients,
-      fromAddress: fromAddress || smtpUser,
+      email,
+      password,
       smtpHost,
       smtpPort,
-      smtpUser,
-      smtpPassword: String(body.smtpPassword ?? ""),
+      ccRecipients,
       sendCustomerConfirmation: body.sendCustomerConfirmation !== false,
     });
-    return NextResponse.json({
-      settings: toSafeEmailSettings(saved),
-      storage: describeStorage(),
-    });
+    return NextResponse.json({ settings: saved, storage: describeStorage() });
   } catch (error) {
     console.error("could not save email settings", error);
     return NextResponse.json(

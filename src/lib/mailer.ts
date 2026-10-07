@@ -21,12 +21,12 @@ export class MailerNotConfiguredError extends Error {
 }
 
 /**
- * Build a transport from the settings an admin saved, falling back to the
- * SMTP_* environment variables for anything they have not changed.
+ * Build a transport from the one Zoho account an admin saved, falling back
+ * to the SMTP_* environment variables for anything they have not changed.
  */
 export async function getMailer(): Promise<Mailer> {
   const settings = await getEmailSettings();
-  if (!settings.smtpPassword) {
+  if (!settings.password) {
     throw new MailerNotConfiguredError();
   }
 
@@ -34,16 +34,14 @@ export async function getMailer(): Promise<Mailer> {
     host: settings.smtpHost,
     port: settings.smtpPort,
     secure: settings.smtpPort === 465,
-    auth: { user: settings.smtpUser, pass: settings.smtpPassword },
+    auth: { user: settings.email, pass: settings.password },
   });
-
-  const from = settings.fromAddress || settings.smtpUser;
 
   return {
     settings,
     async send(message) {
       await transport.sendMail({
-        from,
+        from: settings.email,
         to: message.to,
         cc: message.cc?.length ? message.cc : undefined,
         replyTo: message.replyTo,
@@ -54,13 +52,13 @@ export async function getMailer(): Promise<Mailer> {
   };
 }
 
-/** The bakery inbox plus any CC addresses an admin added. */
+/** The one Zoho inbox, plus any CC addresses an admin added. */
 export function orderRecipients(settings: EmailSettings): {
   to: string;
   cc: string[];
 } {
   return {
-    to: settings.orderRecipient,
+    to: settings.email,
     cc: parseRecipients(settings.ccRecipients),
   };
 }

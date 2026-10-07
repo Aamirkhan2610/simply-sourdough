@@ -1,10 +1,10 @@
 import { isDatabaseConfigured, readSetting, writeSetting } from "@/lib/db";
-import type { EmailSettings, SafeEmailSettings } from "@/lib/types";
+import type { EmailSettings } from "@/lib/types";
 
 const SETTINGS_KEY = "email";
 
 /** The inbox orders went to before these settings were configurable. */
-const LEGACY_ORDER_RECIPIENT = "Farid@simplysourdough.shop";
+const LEGACY_EMAIL = "Farid@simplysourdough.shop";
 
 /** Cache so a burst of orders does not hit the database for every email. */
 const CACHE_TTL_MS = 10_000;
@@ -16,19 +16,15 @@ declare global {
 
 /**
  * Defaults come from the SMTP_* environment variables, so the site keeps
- * sending to the same place until an admin saves something different.
+ * sending the same way until an admin saves something different.
  */
 export function defaultEmailSettings(): EmailSettings {
-  const user = (process.env.SMTP_USER || "").trim();
   return {
-    orderRecipient:
-      (process.env.ORDER_EMAIL_TO || "").trim() || LEGACY_ORDER_RECIPIENT,
-    ccRecipients: (process.env.ORDER_EMAIL_CC || "").trim(),
-    fromAddress: (process.env.SMTP_FROM || "").trim() || user,
+    email: (process.env.SMTP_USER || "").trim() || LEGACY_EMAIL,
+    password: process.env.SMTP_PASS || "",
     smtpHost: (process.env.SMTP_HOST || "").trim() || "smtp.zoho.com",
     smtpPort: Number(process.env.SMTP_PORT || 465),
-    smtpUser: user,
-    smtpPassword: process.env.SMTP_PASS || "",
+    ccRecipients: (process.env.ORDER_EMAIL_CC || "").trim(),
     sendCustomerConfirmation: true,
     updatedAt: new Date(0).toISOString(),
   };
@@ -40,14 +36,11 @@ function merge(stored: Partial<EmailSettings> | null): EmailSettings {
   if (!stored) return base;
   const port = Number(stored.smtpPort);
   return {
-    orderRecipient: stored.orderRecipient?.trim() || base.orderRecipient,
-    ccRecipients: stored.ccRecipients?.trim() ?? base.ccRecipients,
-    fromAddress: stored.fromAddress?.trim() || base.fromAddress,
+    email: stored.email?.trim() || base.email,
+    password: stored.password || base.password,
     smtpHost: stored.smtpHost?.trim() || base.smtpHost,
     smtpPort: Number.isFinite(port) && port > 0 ? port : base.smtpPort,
-    smtpUser: stored.smtpUser?.trim() || base.smtpUser,
-    // An empty stored password means "keep using the environment secret".
-    smtpPassword: stored.smtpPassword || base.smtpPassword,
+    ccRecipients: stored.ccRecipients?.trim() ?? base.ccRecipients,
     sendCustomerConfirmation:
       typeof stored.sendCustomerConfirmation === "boolean"
         ? stored.sendCustomerConfirmation
@@ -87,10 +80,6 @@ export async function saveEmailSettings(
   const next: EmailSettings = {
     ...current,
     ...patch,
-    // A blank password submission keeps the one already stored.
-    smtpPassword: patch.smtpPassword?.trim()
-      ? patch.smtpPassword.trim()
-      : current.smtpPassword,
     smtpPort: Number(patch.smtpPort ?? current.smtpPort),
     updatedAt: new Date().toISOString(),
   };
@@ -103,14 +92,6 @@ export async function saveEmailSettings(
 
   globalThis.__ssEmailSettings = { value: next, at: Date.now() };
   return next;
-}
-
-/** Strip the password before anything is sent to the browser. */
-export function toSafeEmailSettings(
-  settings: EmailSettings
-): SafeEmailSettings {
-  const { smtpPassword, ...rest } = settings;
-  return { ...rest, smtpPasswordSet: smtpPassword.length > 0 };
 }
 
 export function isValidEmail(value: string): boolean {
